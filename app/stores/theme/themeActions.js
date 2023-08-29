@@ -1,4 +1,4 @@
-import {blueTheme, greenTheme, orangeTheme, purpleThem} from '../../constants';
+import {blueTheme, greenTheme, orangeTheme, purpleTheme} from '../../constants';
 
 export const TOGGLE_THEME_BEGIN = 'TOGGLE_THEME_BEGIN';
 export const TOGGLE_THEME_SUCCESS = 'TOGGLE_THEME_SUCCESS';
@@ -27,7 +27,7 @@ export function toggleTheme(themeType) {
         dispatch(toggleThemeSuccess(blueTheme));
         break;
       case 'purple':
-        dispatch(toggleThemeSuccess(purpleThem));
+        dispatch(toggleThemeSuccess(purpleTheme));
         break;
       case 'green':
         dispatch(toggleThemeSuccess(greenTheme));

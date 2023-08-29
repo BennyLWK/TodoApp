@@ -17,6 +17,7 @@ import {
 import {useDrawerProgress} from '@react-navigation/drawer';
 import {connect} from 'react-redux';
 import {setSelectedTab} from '../stores/tab/tabActions';
+import {toggleTheme} from '../stores/theme/themeActions';
 
 import {Home} from '../screens';
 import {Header} from '../components';
@@ -29,58 +30,78 @@ import {
   dummyData,
   theme,
 } from '../constants';
+import appTheme from '../constants/theme';
 
-const TabButton = ({
-  label,
-  labelStyle,
-  selectedColor,
-  isFocused,
-  outerContainerStyle,
-  innerContainerStyle,
-  onPress,
+const MainLayout = ({
+  navigation,
+  selectedTab,
+  setSelectedTab,
+  appTheme,
+  toggleTheme,
 }) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View
-        style={[
-          {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: isFocused ? selectedColor : COLORS.white,
-          },
-          outerContainerStyle,
-        ]}>
+  const flatListRef = React.useRef();
+  const TabButton = ({
+    label,
+    labelStyle,
+    selectedColor,
+    isFocused,
+    outerContainerStyle,
+    innerContainerStyle,
+    onPress,
+  }) => {
+    return (
+      <TouchableWithoutFeedback onPress={onPress}>
         <View
           style={[
             {
-              flexDirection: 'row',
-              width: 24,
-              height: 24,
+              flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: isFocused
+                ? appTheme.bottomTabBarBackgroundColor
+                : COLORS.white,
             },
-            innerContainerStyle,
-          ]}></View>
-        <Text
-          numberOfLines={1}
-          style={[
-            {
-              marginTop: SIZES.base,
-              color: COLORS.black,
-              ...FONTS.h3,
-            },
-            labelStyle,
+            outerContainerStyle,
           ]}>
-          {label}
-        </Text>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
+          <View
+            style={[
+              {
+                flexDirection: 'row',
+                width: 24,
+                height: 24,
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+              innerContainerStyle,
+            ]}></View>
+          <Text
+            numberOfLines={1}
+            style={[
+              {
+                marginTop: SIZES.base,
+                color: appTheme.textColor,
+                ...FONTS.h3,
+              },
+              labelStyle,
+            ]}>
+            {label}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  };
 
-const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
-  const flatListRef = React.useRef();
+  function toggleThemeHandler(color) {
+    if (color == 'blue') {
+      toggleTheme('blue');
+    } else if (color == 'purple') {
+      toggleTheme('purple');
+    } else if (color == 'green') {
+      toggleTheme('green');
+    } else if (color == 'orange') {
+      toggleTheme('orange');
+    }
+  }
 
   return (
     <View
@@ -96,7 +117,7 @@ const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
           paddingHorizontal: SIZES.radius,
           marginTop: 40,
           alignItems: 'center',
-          backgroundColor: COLORS.primary,
+          backgroundColor: appTheme.backgroundColor,
         }}
         title={'TODO'}
         leftComponent={
@@ -139,9 +160,9 @@ const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
           <TabButton
             label={constants.colorTheme.blue}
             labelStyle={{color: COLORS.blue}}
-            isFocused={selectedTab == constants.colorTheme.blue}
+            isFocused={appTheme.name == 'blue'}
             onPress={() => {
-              setSelectedTab(constants.colorTheme.blue);
+              toggleThemeHandler('blue');
             }}
             innerContainerStyle={{backgroundColor: COLORS.blue}}
             selectedColor={COLORS.lightBlue}
@@ -150,9 +171,9 @@ const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
           <TabButton
             label={constants.colorTheme.purple}
             labelStyle={{color: COLORS.purple}}
-            isFocused={selectedTab == constants.colorTheme.purple}
+            isFocused={appTheme.name == 'purple'}
             onPress={() => {
-              setSelectedTab(constants.colorTheme.purple);
+              toggleThemeHandler('purple');
             }}
             innerContainerStyle={{backgroundColor: COLORS.purple}}
             selectedColor={COLORS.lightPurple}
@@ -161,9 +182,9 @@ const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
           <TabButton
             label={constants.colorTheme.green}
             labelStyle={{color: COLORS.green}}
-            isFocused={selectedTab == constants.colorTheme.green}
+            isFocused={appTheme.name == 'green'}
             onPress={() => {
-              setSelectedTab(constants.colorTheme.green);
+              toggleThemeHandler('green');
             }}
             innerContainerStyle={{backgroundColor: COLORS.green}}
             selectedColor={COLORS.lightGreen}
@@ -172,9 +193,9 @@ const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
           <TabButton
             label={constants.colorTheme.orange}
             labelStyle={{color: COLORS.orange}}
-            isFocused={selectedTab == constants.colorTheme.orange}
+            isFocused={appTheme.name == 'orange'}
             onPress={() => {
-              setSelectedTab(constants.colorTheme.orange);
+              toggleThemeHandler('orange');
             }}
             innerContainerStyle={{backgroundColor: COLORS.orange}}
             selectedColor={COLORS.lightOrange}
@@ -188,6 +209,8 @@ const MainLayout = ({navigation, selectedTab, setSelectedTab}) => {
 function mapStateToProps(state) {
   return {
     selectedTab: state.tabReducer.selectedTab,
+    appTheme: state.themeReducer.appTheme,
+    error: state.themeReducer.error,
   };
 }
 
@@ -195,6 +218,9 @@ function mapDispatchToProps(dispatch) {
   return {
     setSelectedTab: selectedTab => {
       return dispatch(setSelectedTab(selectedTab));
+    },
+    toggleTheme: themeType => {
+      return dispatch(toggleTheme(themeType));
     },
   };
 }

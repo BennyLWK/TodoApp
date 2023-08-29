@@ -66,7 +66,7 @@ export const blueTheme = {
   textColor: COLORS.blue,
   tabBackgroundColor: COLORS.blue,
   cardBackgroundColor: COLORS.blue,
-  bottomTabBarBackgroundColor: COLORS.blue,
+  bottomTabBarBackgroundColor: COLORS.lightBlue,
   headerColor: COLORS.blue,
 };
 
@@ -76,7 +76,7 @@ export const purpleTheme = {
   textColor: COLORS.purple,
   tabBackgroundColor: COLORS.purple,
   cardBackgroundColor: COLORS.purple,
-  bottomTabBarBackgroundColor: COLORS.purple,
+  bottomTabBarBackgroundColor: COLORS.lightPurple,
   headerColor: COLORS.purple,
 };
 
@@ -86,7 +86,7 @@ export const greenTheme = {
   textColor: COLORS.green,
   tabBackgroundColor: COLORS.green,
   cardBackgroundColor: COLORS.green,
-  bottomTabBarBackgroundColor: COLORS.green,
+  bottomTabBarBackgroundColor: COLORS.lightGreen,
   headerColor: COLORS.green,
 };
 
@@ -96,7 +96,7 @@ export const orangeTheme = {
   textColor: COLORS.orange,
   tabBackgroundColor: COLORS.orange,
   cardBackgroundColor: COLORS.orange,
-  bottomTabBarBackgroundColor: COLORS.orange,
+  bottomTabBarBackgroundColor: COLORS.lightOrange,
   headerColor: COLORS.orange,
 };
 

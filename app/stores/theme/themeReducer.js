@@ -1,6 +1,5 @@
 import * as themeActionTypes from './themeActions';
 import {selectedTheme} from '../../constants';
-import {act} from 'react-test-renderer';
 
 const initialState = {
   appTheme: selectedTheme,

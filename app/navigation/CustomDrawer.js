@@ -1,20 +1,16 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  useDrawerProgress,
 } from '@react-navigation/drawer';
-// import Animated from 'react-native-reanimated';
-// import {connect} from 'react-redux';
-// import {setSelectedTab} from '../stores/tab/tabActions';
 
 import {MainLayout} from '../screens';
-import {COLORS, FONTS, SIZES, constants, icons, dummyData} from '../constants';
+import {COLORS, FONTS, SIZES} from '../constants';
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawerItem = ({label, icon, isFocused, onPress}) => {
+const CustomDrawerItem = ({label, isFocused, onPress}) => {
   return (
     <TouchableOpacity
       style={{
@@ -44,7 +40,6 @@ const CustomDrawerContent = ({navigation, selectedTab, setSelectedTab}) => {
       scrollEnabled={true}
       contentContainerStyle={{
         flex: 1,
-        // backgroundColor: COLORS.primary,
       }}>
       <View
         style={{
@@ -88,16 +83,14 @@ const CustomDrawerContent = ({navigation, selectedTab, setSelectedTab}) => {
   );
 };
 
-const CustomDrawer = ({selectedTab, setSelectedTab}) => {
+const CustomDrawer = ({}) => {
   return (
     <View
       style={{
         flex: 1,
-        // backgroundColor: COLORS.primary,
+        backgroundColor: COLORS.primary,
       }}>
       <Drawer.Navigator
-        // useLegacyImplementation
-        //
         screenOptions={{
           headerShown: false,
           overlayColor: 'transparent',
@@ -108,13 +101,7 @@ const CustomDrawer = ({selectedTab, setSelectedTab}) => {
         }}
         initialRouteName="MainLayout"
         drawerContent={props => {
-          return (
-            <CustomDrawerContent
-              navigation={props.navigation}
-              //   selectedTab={selectedTab}
-              //   setSelectedTab={setSelectedTab}
-            />
-          );
+          return <CustomDrawerContent navigation={props.navigation} />;
         }}>
         <Drawer.Screen name="MainLayout">
           {props => <MainLayout {...props} />}
@@ -124,19 +111,4 @@ const CustomDrawer = ({selectedTab, setSelectedTab}) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    selectedTab: state.tabReducer.selectedTab,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setSelectedTab: selectedTab => {
-      return dispatch(setSelectedTab(selectedTab));
-    },
-  };
-}
-
-// export default connect(mapStateToProps, mapDispatchToProps)(CustomDrawer);
 export default CustomDrawer;

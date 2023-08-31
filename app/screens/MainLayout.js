@@ -8,42 +8,19 @@ import {
   FlatList,
   Platform,
 } from 'react-native';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedStyle,
-//   withTiming,
-// } from 'react-native-reanimated';
-// import LinearGradient from 'react-native-linear-gradient';
-import {useDrawerProgress} from '@react-navigation/drawer';
-import {connect} from 'react-redux';
-import {setSelectedTab} from '../stores/tab/tabActions';
-import {toggleTheme} from '../stores/theme/themeActions';
+import {useSelector, useDispatch} from 'react-redux';
 
-import {Home} from '../screens';
 import {Header} from '../components';
-import {
-  COLORS,
-  FONTS,
-  SIZES,
-  icons,
-  constants,
-  dummyData,
-  theme,
-} from '../constants';
-import appTheme from '../constants/theme';
-
-const MainLayout = ({
-  navigation,
-  selectedTab,
-  setSelectedTab,
-  appTheme,
-  toggleTheme,
-}) => {
+import {COLORS, FONTS, SIZES, icons, constants} from '../constants';
+import {toggleTheme, selectTheme} from '../stores/theme/themeSlice';
+const MainLayout = ({navigation}) => {
   const flatListRef = React.useRef();
+  const appTheme = useSelector(selectTheme);
+  const dispatch = useDispatch();
+
   const TabButton = ({
     label,
     labelStyle,
-    selectedColor,
     isFocused,
     outerContainerStyle,
     innerContainerStyle,
@@ -93,13 +70,13 @@ const MainLayout = ({
 
   function toggleThemeHandler(color) {
     if (color == 'blue') {
-      toggleTheme('blue');
+      dispatch(toggleTheme('blue'));
     } else if (color == 'purple') {
-      toggleTheme('purple');
+      dispatch(toggleTheme('purple'));
     } else if (color == 'green') {
-      toggleTheme('green');
+      dispatch(toggleTheme('green'));
     } else if (color == 'orange') {
-      toggleTheme('orange');
+      dispatch(toggleTheme('orange'));
     }
   }
 
@@ -113,9 +90,9 @@ const MainLayout = ({
       {/* Header */}
       <Header
         containerStyle={{
-          height: 50,
+          height: Platform.OS == 'ios' ? 90 : 50,
           paddingHorizontal: SIZES.radius,
-          marginTop: 40,
+          paddingTop: Platform.OS == 'ios' ? 40 : 0,
           alignItems: 'center',
           backgroundColor: appTheme.backgroundColor,
         }}
@@ -165,7 +142,6 @@ const MainLayout = ({
               toggleThemeHandler('blue');
             }}
             innerContainerStyle={{backgroundColor: COLORS.blue}}
-            selectedColor={COLORS.lightBlue}
           />
 
           <TabButton
@@ -176,7 +152,6 @@ const MainLayout = ({
               toggleThemeHandler('purple');
             }}
             innerContainerStyle={{backgroundColor: COLORS.purple}}
-            selectedColor={COLORS.lightPurple}
           />
 
           <TabButton
@@ -187,7 +162,6 @@ const MainLayout = ({
               toggleThemeHandler('green');
             }}
             innerContainerStyle={{backgroundColor: COLORS.green}}
-            selectedColor={COLORS.lightGreen}
           />
 
           <TabButton
@@ -198,7 +172,6 @@ const MainLayout = ({
               toggleThemeHandler('orange');
             }}
             innerContainerStyle={{backgroundColor: COLORS.orange}}
-            selectedColor={COLORS.lightOrange}
           />
         </View>
       </View>
@@ -206,23 +179,4 @@ const MainLayout = ({
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    selectedTab: state.tabReducer.selectedTab,
-    appTheme: state.themeReducer.appTheme,
-    error: state.themeReducer.error,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setSelectedTab: selectedTab => {
-      return dispatch(setSelectedTab(selectedTab));
-    },
-    toggleTheme: themeType => {
-      return dispatch(toggleTheme(themeType));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainLayout);
+export default MainLayout;

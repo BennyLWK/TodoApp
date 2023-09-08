@@ -68,6 +68,7 @@ export const blueTheme = {
   cardBackgroundColor: COLORS.blue,
   bottomTabBarBackgroundColor: COLORS.lightBlue,
   headerColor: COLORS.blue,
+  iconColor: COLORS.blue,
 };
 
 export const purpleTheme = {
@@ -78,6 +79,7 @@ export const purpleTheme = {
   cardBackgroundColor: COLORS.purple,
   bottomTabBarBackgroundColor: COLORS.lightPurple,
   headerColor: COLORS.purple,
+  iconColor: COLORS.purple,
 };
 
 export const greenTheme = {
@@ -88,6 +90,7 @@ export const greenTheme = {
   cardBackgroundColor: COLORS.green,
   bottomTabBarBackgroundColor: COLORS.lightGreen,
   headerColor: COLORS.green,
+  iconColor: COLORS.green,
 };
 
 export const orangeTheme = {
@@ -98,18 +101,7 @@ export const orangeTheme = {
   cardBackgroundColor: COLORS.orange,
   bottomTabBarBackgroundColor: COLORS.lightOrange,
   headerColor: COLORS.orange,
+  iconColor: COLORS.orange,
 };
 
 export const selectedTheme = blueTheme;
-
-const appTheme = {
-  COLORS,
-  SIZES,
-  FONTS,
-  blueTheme,
-  purpleTheme,
-  greenTheme,
-  purpleTheme,
-};
-
-export default appTheme;

@@ -1,22 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  StyleSheet,
   Image,
-  FlatList,
   Platform,
+  Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
-import {Header} from '../components';
+import {Header, TodoList} from '../components';
 import {COLORS, FONTS, SIZES, icons, constants} from '../constants';
-import {toggleTheme, selectTheme} from '../stores/theme/themeSlice';
+import {toggleTheme, selectTheme} from '../redux/theme/themeSlice';
+import {addTask} from '../redux/task/taskSlice';
+
 const MainLayout = ({navigation}) => {
-  const flatListRef = React.useRef();
-  const appTheme = useSelector(selectTheme);
   const dispatch = useDispatch();
+  const appTheme = useSelector(selectTheme);
+  const todos = useSelector(state => state.tasks);
+
+  const [todo, setTodo] = useState('');
+  const [newStarting, setNewStarting] = useState(true);
 
   const TabButton = ({
     label,
@@ -80,6 +87,21 @@ const MainLayout = ({navigation}) => {
     }
   }
 
+  const onSubmitTask = () => {
+    if (todo.trim().length === 0) {
+      Alert.alert('You need to enter a task');
+      setTodo('');
+      return;
+    }
+
+    dispatch(
+      addTask({
+        task: todo,
+      }),
+    );
+    setTodo('');
+  };
+
   return (
     <View
       style={{
@@ -112,10 +134,55 @@ const MainLayout = ({navigation}) => {
       />
 
       {/* Content */}
-      <View
-        style={{
-          flex: 1,
-        }}></View>
+      <View style={todos.length > 0 ? styles.listView : styles.emptyView}>
+        {newStarting && (
+          <View>
+            <TouchableOpacity onPress={() => setNewStarting(false)}>
+              <Text
+                style={{
+                  fontSize: SIZES.h1,
+                  textAlign: 'center',
+                }}>
+                + Add a new task
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {!newStarting && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            {/* TextInput */}
+            <TextInput
+              style={{
+                borderColor: COLORS.black,
+                borderWidth: 2,
+                width: '70%',
+                paddingLeft: SIZES.base,
+              }}
+              placeholder="Enter a task"
+              onChangeText={setTodo}
+              value={todo}
+            />
+            {/* Button */}
+            <TouchableOpacity
+              style={{backgroundColor: appTheme.backgroundColor, width: '20%'}}
+              onPress={() => onSubmitTask()}>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontSize: SIZES.body1,
+                  textAlign: 'center',
+                }}>
+                Add
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <TodoList />
+      </View>
 
       {/* Footer */}
       <View
@@ -128,8 +195,6 @@ const MainLayout = ({navigation}) => {
           style={{
             flex: 1,
             flexDirection: 'row',
-            paddingHorizontal: SIZES.radius,
-            paddingBottom: 10,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             backgroundColor: COLORS.white,
@@ -180,3 +245,12 @@ const MainLayout = ({navigation}) => {
 };
 
 export default MainLayout;
+
+const styles = StyleSheet.create({
+  emptyView: {flex: 1, justifyContent: 'center'},
+  listView: {
+    flex: 1,
+    marginTop: SIZES.padding,
+    paddingBottom: 50,
+  },
+});

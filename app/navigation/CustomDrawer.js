@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/drawer';
 
 import {MainLayout} from '../screens';
-import {COLORS, FONTS, SIZES} from '../constants';
+import {COLORS, FONTS, SIZES, constants} from '../constants';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,7 +18,6 @@ const CustomDrawerItem = ({label, isFocused, onPress}) => {
         height: 40,
         marginBottom: SIZES.base,
         alignItems: 'center',
-        paddingLeft: SIZES.radius,
         borderRadius: SIZES.base,
         backgroundColor: isFocused ? COLORS.lightBlue : null,
       }}
@@ -60,19 +59,19 @@ const CustomDrawerContent = ({navigation, selectedTab, setSelectedTab}) => {
             marginTop: SIZES.height > 800 ? SIZES.padding : SIZES.radius,
           }}>
           <CustomDrawerItem
-            label={'所有事项'}
+            label={constants.todoStatus.all}
             onPress={() => {
               navigation.closeDrawer();
             }}
           />
           <CustomDrawerItem
-            label={'已完成事项'}
+            label={constants.todoStatus.completed}
             onPress={() => {
               navigation.closeDrawer();
             }}
           />
           <CustomDrawerItem
-            label={'未完成事项'}
+            label={constants.todoStatus.completed}
             onPress={() => {
               navigation.closeDrawer();
             }}
@@ -93,9 +92,9 @@ const CustomDrawer = ({}) => {
       <Drawer.Navigator
         screenOptions={{
           headerShown: false,
-          overlayColor: 'transparent',
+          overlayColor: COLORS.transparentBlack6, //'transparent',
           drawerStyle: {
-            width: '60%',
+            width: '40%',
           },
           drawerType: 'slide',
         }}

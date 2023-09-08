@@ -4,10 +4,16 @@ const screens = {
 };
 
 const colorTheme = {
-  blue: '蓝色',
-  purple: '紫色',
-  green: '绿色',
-  orange: '橙色',
+  blue: 'Blue',
+  purple: 'Purple',
+  green: 'Green',
+  orange: 'Orange',
+};
+
+const todoStatus = {
+  all: 'All',
+  active: 'Active',
+  completed: 'Completed',
 };
 
 const bottom_tabs = [
@@ -33,4 +39,5 @@ export default {
   screens,
   bottom_tabs,
   colorTheme,
+  todoStatus,
 };

@@ -1,14 +1,12 @@
 import React from 'react';
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Provider} from 'react-redux';
 
-import rootReducer from './app/stores/rootReducer';
+import store from './app/redux/store';
 import CustomDrawer from './app/navigation/CustomDrawer';
 
 const Stack = createNativeStackNavigator();
-
-const store = rootReducer;
 
 const App = () => {
   return (

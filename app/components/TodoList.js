@@ -47,7 +47,7 @@ const TodoList = () => {
   return (
     <View>
       <FlatList
-        data={todos}
+        data={todos.taskList}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

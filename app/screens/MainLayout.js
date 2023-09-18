@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
-import {Header, TodoList} from '../components';
+import {Header, TextIconButton, TodoList} from '../components';
 import {COLORS, FONTS, SIZES, icons, constants} from '../constants';
 import {toggleTheme, selectTheme} from '../redux/theme/themeSlice';
-import {addTask} from '../redux/task/taskSlice';
+import {addTask, clearTask} from '../redux/task/taskSlice';
 
 const MainLayout = ({navigation}) => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const MainLayout = ({navigation}) => {
               {
                 marginTop: SIZES.base,
                 color: appTheme.textColor,
-                ...FONTS.h3,
+                ...FONTS.body3,
               },
               labelStyle,
             ]}>
@@ -102,6 +102,11 @@ const MainLayout = ({navigation}) => {
     setTodo('');
   };
 
+  const onClearTask = () => {
+    dispatch(clearTask());
+    setTodo('');
+  };
+
   return (
     <View
       style={{
@@ -134,7 +139,8 @@ const MainLayout = ({navigation}) => {
       />
 
       {/* Content */}
-      <View style={todos.length > 0 ? styles.listView : styles.emptyView}>
+      <View
+        style={todos.taskList.length > 0 ? styles.listView : styles.emptyView}>
         {newStarting && (
           <View>
             <TouchableOpacity onPress={() => setNewStarting(false)}>
@@ -183,6 +189,31 @@ const MainLayout = ({navigation}) => {
         )}
         <TodoList />
       </View>
+
+      {/* Clear Button */}
+      {todos.taskList.length > 0 && (
+        <View style={{margin: SIZES.padding}}>
+          <TextIconButton
+            containerStyle={{
+              height: 50,
+              alignItems: 'center',
+              borderRadius: SIZES.radius,
+              backgroundColor: appTheme.backgroundColor,
+            }}
+            icon={icons.delete_icon}
+            iconPosition="LEFT"
+            iconStyle={{
+              tintColor: COLORS.white,
+            }}
+            label="Clear All"
+            labelStyle={{
+              marginLeft: SIZES.radius,
+              color: COLORS.white,
+            }}
+            onPress={() => onClearTask()}
+          />
+        </View>
+      )}
 
       {/* Footer */}
       <View

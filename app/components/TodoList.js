@@ -10,7 +10,7 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SIZES, icons} from '../constants';
-import {deleteTask} from '../redux/task/taskSlice';
+import {completeTask, deleteTask} from '../redux/task/taskSlice';
 import {selectTheme} from '../redux/theme/themeSlice';
 
 const TodoList = () => {
@@ -27,19 +27,41 @@ const TodoList = () => {
     );
   };
 
+  // Complete item by checking if id is equal to the id of the item
+  const onComplete = id => {
+    dispatch(
+      completeTask({
+        id: id,
+      }),
+    );
+  };
+
   // RenderItem function with a delete button
   const renderItem = ({item}) => {
     return (
       <View
         style={[styles.item, {borderBottomColor: appTheme.backgroundColor}]}>
         <Text style={styles.title}>{item.name}</Text>
-        <TouchableOpacity onPress={() => onDelete(item.id)}>
-          <Image
-            tintColor={appTheme.iconColor}
-            source={icons.delete_icon}
-            style={{width: SIZES.base * 2, height: SIZES.base * 2}}
-          />
-        </TouchableOpacity>
+        <View style={styles.itemRightView}>
+          {!item.completed && (
+            <TouchableOpacity
+              onPress={() => onComplete(item.id)}
+              style={{marginRight: SIZES.base}}>
+              <Image
+                tintColor={appTheme.iconColor}
+                source={icons.correct}
+                style={styles.iconView}
+              />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity onPress={() => onDelete(item.id)}>
+            <Image
+              tintColor={appTheme.iconColor}
+              source={icons.cross}
+              style={styles.iconView}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -67,7 +89,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  itemRightView: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   title: {
     fontSize: SIZES.body3,
+    width: '85%',
+  },
+  iconView: {
+    width: SIZES.padding,
+    height: SIZES.padding,
   },
 });

@@ -26,7 +26,7 @@ const CustomDrawerItem = ({label, isFocused, onPress}) => {
         style={{
           marginLeft: 15,
           color: COLORS.gray4,
-          ...FONTS.h3,
+          ...FONTS.body3,
         }}>
         {label}
       </Text>
@@ -71,7 +71,7 @@ const CustomDrawerContent = ({navigation, selectedTab, setSelectedTab}) => {
             }}
           />
           <CustomDrawerItem
-            label={constants.todoStatus.completed}
+            label={constants.todoStatus.active}
             onPress={() => {
               navigation.closeDrawer();
             }}

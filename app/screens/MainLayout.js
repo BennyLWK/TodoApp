@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
-import {Header, TextIconButton, TodoList} from '../components';
+import {Header, IconButton, TextIconButton, TodoList} from '../components';
 import {COLORS, FONTS, SIZES, icons, constants} from '../constants';
 import {toggleTheme, selectTheme} from '../redux/theme/themeSlice';
 import {addTask, clearTask} from '../redux/task/taskSlice';
@@ -93,7 +93,6 @@ const MainLayout = ({navigation}) => {
       setTodo('');
       return;
     }
-
     dispatch(
       addTask({
         task: todo,
@@ -102,9 +101,15 @@ const MainLayout = ({navigation}) => {
     setTodo('');
   };
 
+  const onSearchTask = () => {};
+
   const onClearTask = () => {
     dispatch(clearTask());
     setTodo('');
+  };
+
+  const onChangeTask = e => {
+    setTodo(e);
   };
 
   return (
@@ -165,11 +170,11 @@ const MainLayout = ({navigation}) => {
               style={{
                 borderColor: COLORS.black,
                 borderWidth: 2,
-                width: '70%',
+                width: '50%',
                 paddingLeft: SIZES.base,
               }}
               placeholder="Enter a task"
-              onChangeText={setTodo}
+              onChangeText={onChangeTask}
               value={todo}
             />
             {/* Button */}
@@ -185,6 +190,20 @@ const MainLayout = ({navigation}) => {
                 Add
               </Text>
             </TouchableOpacity>
+            <IconButton
+              containerStyle={{
+                width: 30,
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+              icon={icons.search}
+              iconStyle={{
+                height: 25,
+                width: 25,
+                tintColor: COLORS.black,
+              }}
+              onPress={() => onSearchTask()}
+            />
           </View>
         )}
         <TodoList />

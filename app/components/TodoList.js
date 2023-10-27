@@ -1,17 +1,11 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {StyleSheet, Text, View, FlatList} from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SIZES, icons} from '../constants';
 import {completeTask, deleteTask} from '../redux/task/taskSlice';
 import {selectTheme} from '../redux/theme/themeSlice';
+import {IconButton} from '../components';
 
 const TodoList = () => {
   const dispatch = useDispatch();
@@ -41,26 +35,31 @@ const TodoList = () => {
     return (
       <View
         style={[styles.item, {borderBottomColor: appTheme.backgroundColor}]}>
-        <Text style={styles.title}>{item.name}</Text>
+        <Text style={item.completed ? styles.completedTitle : styles.title}>
+          {item.name}
+        </Text>
         <View style={styles.itemRightView}>
           {!item.completed && (
-            <TouchableOpacity
+            <IconButton
+              containerStyle={{marginRight: SIZES.base}}
+              icon={icons.correct}
+              iconStyle={{
+                width: SIZES.padding,
+                height: SIZES.padding,
+                tintColor: appTheme.iconColor,
+              }}
               onPress={() => onComplete(item.id)}
-              style={{marginRight: SIZES.base}}>
-              <Image
-                tintColor={appTheme.iconColor}
-                source={icons.correct}
-                style={styles.iconView}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity onPress={() => onDelete(item.id)}>
-            <Image
-              tintColor={appTheme.iconColor}
-              source={icons.cross}
-              style={styles.iconView}
             />
-          </TouchableOpacity>
+          )}
+          <IconButton
+            icon={icons.cross}
+            iconStyle={{
+              width: SIZES.padding,
+              height: SIZES.padding,
+              tintColor: appTheme.iconColor,
+            }}
+            onPress={() => onDelete(item.id)}
+          />
         </View>
       </View>
     );
@@ -96,6 +95,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.body3,
     width: '85%',
+  },
+  completedTitle: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
   },
   iconView: {
     width: SIZES.padding,

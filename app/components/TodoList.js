@@ -68,7 +68,11 @@ const TodoList = () => {
   return (
     <View>
       <FlatList
-        data={todos.taskList}
+        data={
+          typeof todos.searchKeyword === 'boolean'
+            ? todos.filteredTasks
+            : todos.taskList
+        }
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

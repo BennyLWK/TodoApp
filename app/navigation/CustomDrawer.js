@@ -4,13 +4,21 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {MainLayout} from '../screens';
 import {COLORS, FONTS, SIZES, constants} from '../constants';
+import {
+  searchByCompletedStatus,
+  setSearchKeyword,
+} from '../redux/task/taskSlice';
+import {toggleTheme, selectTheme} from '../redux/theme/themeSlice';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerItem = ({label, isFocused, onPress}) => {
+  const appTheme = useSelector(selectTheme);
+
   return (
     <TouchableOpacity
       style={{
@@ -19,13 +27,15 @@ const CustomDrawerItem = ({label, isFocused, onPress}) => {
         marginBottom: SIZES.base,
         alignItems: 'center',
         borderRadius: SIZES.base,
-        backgroundColor: isFocused ? COLORS.lightBlue : null,
+        backgroundColor: isFocused
+          ? appTheme.bottomTabBarBackgroundColor
+          : null,
       }}
       onPress={onPress}>
       <Text
         style={{
           marginLeft: 15,
-          color: COLORS.gray4,
+          color: isFocused ? appTheme.textColor : COLORS.gray,
           ...FONTS.body3,
         }}>
         {label}
@@ -34,6 +44,22 @@ const CustomDrawerItem = ({label, isFocused, onPress}) => {
   );
 };
 const CustomDrawerContent = ({navigation, selectedTab, setSelectedTab}) => {
+  const dispatch = useDispatch();
+  const todos = useSelector(state => state.tasks);
+
+  const onSearchTask = keyword => {
+    dispatch(
+      setSearchKeyword({
+        search: keyword,
+      }),
+    );
+    dispatch(
+      searchByCompletedStatus({
+        completed: keyword,
+      }),
+    );
+  };
+
   return (
     <DrawerContentScrollView
       scrollEnabled={true}
@@ -59,21 +85,27 @@ const CustomDrawerContent = ({navigation, selectedTab, setSelectedTab}) => {
             marginTop: SIZES.height > 800 ? SIZES.padding : SIZES.radius,
           }}>
           <CustomDrawerItem
+            isFocused={typeof todos.searchKeyword !== 'boolean'}
             label={constants.todoStatus.all}
             onPress={() => {
               navigation.closeDrawer();
+              onSearchTask(null);
             }}
           />
           <CustomDrawerItem
+            isFocused={todos.searchKeyword === true}
             label={constants.todoStatus.completed}
             onPress={() => {
               navigation.closeDrawer();
+              onSearchTask(true);
             }}
           />
           <CustomDrawerItem
+            isFocused={todos.searchKeyword === false}
             label={constants.todoStatus.active}
             onPress={() => {
               navigation.closeDrawer();
+              onSearchTask(false);
             }}
           />
         </View>

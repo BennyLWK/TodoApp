@@ -190,7 +190,7 @@ const MainLayout = ({navigation}) => {
                 Add
               </Text>
             </TouchableOpacity>
-            <IconButton
+            {/* <IconButton
               containerStyle={{
                 width: 30,
                 alignItems: 'flex-end',
@@ -203,7 +203,7 @@ const MainLayout = ({navigation}) => {
                 tintColor: COLORS.black,
               }}
               onPress={() => onSearchTask()}
-            />
+            /> */}
           </View>
         )}
         <TodoList />
